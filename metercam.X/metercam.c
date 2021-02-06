@@ -19,13 +19,13 @@
 #include "mcc_generated_files/eusart1.h"
 
 // maximum on time until we forcibly switch off the ESP32CAM
-#define MAX_ON_TIME_TICKS (5)
+#define MAX_ON_TIME_TICKS (20)
 
 // unless we are told otherwise (via serial requests by ESP32CAM), we sleep
 // this many intervals between wake-ups.
 #define DEFAULT_NR_OF_SLEEP_INTERVALS (10)
 
-// SYSTICK, <<in what units?>>
+// SYSTICK, approximately in seconds
 volatile uint16_t global_time_ticks;
 
 // our next hibernation will last for this many watchdog timer intervals
@@ -59,8 +59,11 @@ void my_TMR0_SystickInterruptHandler(void)
     global_time_ticks++;
 }
 
+//
+// Command Parser
+//
 
-
+// reset to initial state
 void command_parser_init(void)
 {
     command_parser_state = 10;
@@ -93,6 +96,10 @@ void command_parser_ingest(uint8_t b)
             else if(b=='E') // echo
             {
                 EUSART1_Write('e');
+            }
+            else if(b=='V') // version
+            {
+                EUSART1_Write('1');
             }
             break;
             
