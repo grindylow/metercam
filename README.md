@@ -80,12 +80,20 @@ tasks:
 
  - [ ] On initial bootup, switch *on* ESP32-CAM module, then wait for shutdown
    command .
- - [ ] Switch *off* ESP32-CAM module after 5 minutes, even if no
-   (shutdown) command was received. Use a default sleep time of 1 day in this
-   case.
+ - [ ] Switch *off* ESP32-CAM module after 20 seconds, even if no
+   (shutdown) command was received. Use a default sleep time of approximately 1 day in this case, if now other time has previously been configured.
  - [ ] Switch *off* ESP32-CAM when requested (via serial connection), and sleep
    for requested duration, consuming as little power as possible.
  - [ ] Switch *on* ESP32-CAM when requested sleep duration has passed.
+
+ESP32-Firmware and µC-Firmware communicate via serial ports. The µC acts as the
+slave and will respond to the following commands when transmitted by the ESP32:
+
+| Command | Reply | Explanation |
+|---------|-------|-------------|
+| 'E' | 'e' | Echo request/reply - for testing the connection |
+| 'A' <HI> <LO> | 'a' <HI> <LO> | Set new sleep time in 'intervals'. |
+| 'S' | 's' | Switch off power to ESP32 'now' and sleep for configured sleep duration |
 
 
 ### MeterCam ESP32-CAM Firmware
@@ -96,7 +104,7 @@ Compile using Arduino Studio with ESP extensions and the following libraries:
  - -[DoubleResetDetect](https://github.com/jenscski/DoubleResetDetect)-
  - [EspMQTTClient](https://github.com/plapointe6/EspMQTTClient), which requires...
    - [MQTT PubSubClient](https://github.com/knolleary/pubsubclient)
-
+ - [ArduinoJSON](https://arduinojson.org/)
 
 
 [1] ESP32-CAM module: ...
