@@ -20,7 +20,7 @@
 #include <ESPAsyncWebServer.h>
 
 /* we use LittleFS for storing settings */
-#include <LITTLEFS.h>
+#include <LittleFS.h>
 
 /* This project does not share any code with Rui Santos's esp32-cam project. Nevertheless,
  * Rui's contribution to the esp32-cam universe is hereby gratefully acknowledged.
@@ -28,14 +28,14 @@
  */
 
 // our own submodules
-#include "webserver.h"
+#include "mywebserver.h"
 #include "camoperator.h"
 
 WiFiManager myWiFiManager;
 AsyncWebServer server(80);
 CamOperator myCamOperator;
 
-const char *mqtt_server = "192.168.88.24";
+const char *mqtt_server = "192.168.88.203";
 WiFiClient espClient;
 PubSubClient myPubSubClient(espClient);
 
